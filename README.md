@@ -28,4 +28,4 @@ We can observe the TCP connection in out backend servers.
 
 ## Round-Trip time
 
-We measure the end to end latecny for better understand the AFD.
+We measure the end to end latency for better understand the AFD.
