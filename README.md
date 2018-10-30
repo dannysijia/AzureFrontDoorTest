@@ -14,7 +14,9 @@ Testing method include Chrome developer tools for single test and Apache benchma
 
 ## Building a backend server
 
-We build a simple website in US east region with both HTTP and HTTPS capability. This server have static page and dynamic page to modify the webpage.
+We build a simple website in US east region with both HTTP and HTTPS capability. This server have static page and dynamic page to modify the webpage. This server have DNS name(yinghlisimplewebsite.eastus.cloudapp.azure.com) and map to a static IP(23.100.24.170).
+
+I test this webserver from my laptop(123.121.197.100) with Psping and Apache bench.
 
 We setup AFD at Azure East Asia region. Front end name is "", and default routing rule is "".
 
