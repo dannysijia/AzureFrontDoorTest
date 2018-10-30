@@ -18,6 +18,7 @@ We build a simple website in US east region with both HTTP and HTTPS capability.
 
 I test this webserver from my laptop(123.121.197.100) with Psping and Apache bench.
 
+```
 Psping from my laptop to website, end to end latency is around 270ms.
 C:\windows\system32>psping.exe 23.100.24.170:443
 
@@ -36,6 +37,7 @@ Connecting to 23.100.24.170:443: from 192.168.199.112:7634: 283.29ms
 TCP connect statistics for 23.100.24.170:443:
   Sent = 4, Received = 4, Lost = 0 (0% loss),
   Minimum = 259.01ms, Maximum = 283.29ms, Average = 270.10ms
+```
 
 From my Chrome browser, using developer tools, I track the webpage loading performance.
 ![Chrome](https://github.com/yinghli/AzureFrontDoorTest/blob/master/detail.PNG)
@@ -61,9 +63,10 @@ In advance page, we enable caching and dynamic compression.
 
 ## Anycast
 
-For more information about ![Anycast](https://docs.microsoft.com/en-us/azure/frontdoor/front-door-routing-architecture)
+For more information about ![Anycast](https://docs.microsoft.com/en-us/azure/frontdoor/front-door-routing-architecture).
 In my case, after setup AFD, I do a nslookup at my laptop.
 
+```
 C:\windows\system32>nslookup yinghli.azurefd.net
 Server:  Hiwifi.lan
 Address:  192.168.199.1
@@ -75,11 +78,13 @@ Addresses:  2620:1ec:bdf::10
 Aliases:  yinghli.azurefd.net
           t-0001.t-msedge.net
           Edge-Prod-HK2r3.ctrl.t-0001.t-msedge.net
+```
 
 ## Round-Trip time
 
 We measure the end to end latency for better understand the AFD.
 
+```
 C:\windows\system32>psping.exe yinghli.azurefd.net:443
 
 PsPing v2.10 - PsPing - ping, latency, bandwidth measurement utility
@@ -97,6 +102,7 @@ Connecting to 13.107.246.10:443: from 192.168.199.112:16777: 44.49ms
 TCP connect statistics for 13.107.246.10:443:
   Sent = 4, Received = 4, Lost = 0 (0% loss),
   Minimum = 44.49ms, Maximum = 45.61ms, Average = 45.04ms
+```
 
 Psping from my host to front end server, latency is 45ms. This is because I don't need to talk with real webserver in US East, instead of front end server will reply my information from Hong Kong.
 
