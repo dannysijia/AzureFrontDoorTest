@@ -49,6 +49,8 @@ Base on the performance report, we saw two challenges here. One is TCP connectio
 
 By design, AFD try to solve those two problem. We setup a front end as near as customer and terminate the connection. Front end reinitialize this connection to backend server, working as reverse proxy server. In this case, front end server and backend server are all inside Microsoft network, Microsoft backbone network can ensure that this connection is transport by a low latency and low packet drop network. Besides that, AFD can also provide caching function to reduce static information transfer time.
 
+![splittcp](https://github.com/yinghli/AzureFrontDoorTest/blob/master/splittcp.png)
+
 We setup AFD at Azure East Asia region. Front end name is "yinghli.azurefd.net".
 ![Frontend](https://github.com/yinghli/AzureFrontDoorTest/blob/master/frontend.PNG)
 
