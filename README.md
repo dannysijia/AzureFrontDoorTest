@@ -112,10 +112,51 @@ From my Chrome browser, using developer tools, I track the webpage loading perfo
 ## TCP connection on host
 
 On my backend server, I can see 100+ TCP connection is setup from front end server backend.
+```
+root@USEastVM01:/home/sysadmin# netstat -anotp | grep "TIME_WAIT"
+tcp6       0      0 10.0.1.4:443            147.243.0.13:42696      TIME_WAIT   -                    timewait (16.51/0/0)
+tcp6       0      0 10.0.1.4:443            147.243.84.76:26251     TIME_WAIT   -                    timewait (21.72/0/0)
+tcp6       0      0 10.0.1.4:443            147.243.156.76:48085    TIME_WAIT   -                    timewait (13.66/0/0)
+tcp6       0      0 10.0.1.4:443            147.243.156.77:59123    TIME_WAIT   -                    timewait (40.67/0/0)
+tcp6       0      0 10.0.1.4:443            147.243.86.213:14378    TIME_WAIT   -                    timewait (55.70/0/0)
+tcp6       0      0 10.0.1.4:443            147.243.71.13:58581     TIME_WAIT   -                    timewait (31.26/0/0)
+tcp6       0      0 10.0.1.4:443            147.243.84.205:54551    TIME_WAIT   -                    timewait (37.13/0/0)
+tcp6       0      0 10.0.1.4:443            147.243.84.242:20154    TIME_WAIT   -                    timewait (25.32/0/0)
+tcp6       0      0 10.0.1.4:443            147.243.72.13:28003     TIME_WAIT   -                    timewait (15.88/0/0)
+tcp6       0      0 10.0.1.4:443            147.243.143.176:16429   TIME_WAIT   -                    timewait (50.66/0/0)
+tcp6       0      0 10.0.1.4:443            147.243.6.140:63666     TIME_WAIT   -                    timewait (4.17/0/0)
+tcp6       0      0 10.0.1.4:443            147.243.71.46:35764     TIME_WAIT   -                    timewait (46.87/0/0)
+tcp6       0      0 10.0.1.4:443            147.243.132.15:55608    TIME_WAIT   -                    timewait (36.93/0/0)
+tcp6       0      0 10.0.1.4:443            147.243.5.180:28250     TIME_WAIT   -                    timewait (47.98/0/0)
+tcp6       0      0 10.0.1.4:443            147.243.78.115:37737    TIME_WAIT   -                    timewait (51.34/0/0)
+tcp6       0      0 10.0.1.4:443            147.243.70.179:12328    TIME_WAIT   -                    timewait (19.40/0/0)
+tcp6       0      0 10.0.1.4:443            147.243.84.109:12150    TIME_WAIT   -                    timewait (50.88/0/0)
+tcp6       0      0 10.0.1.4:443            147.243.4.244:48547     TIME_WAIT   -                    timewait (50.86/0/0)
+tcp6       0      0 10.0.1.4:443            147.243.16.237:19744    TIME_WAIT   -                    timewait (35.79/0/0)
+tcp6       0      0 10.0.1.4:443            147.243.148.46:42466    TIME_WAIT   -                    timewait (41.03/0/0)
+tcp6       0      0 10.0.1.4:443            147.243.70.206:31842    TIME_WAIT   -                    timewait (52.31/0/0)
+tcp6       0      0 10.0.1.4:443            147.243.128.18:21714    TIME_WAIT   -                    timewait (14.34/0/0)
+tcp6       0      0 10.0.1.4:443            147.243.128.19:61894    TIME_WAIT   -                    timewait (41.36/0/0)
+tcp6       0      0 10.0.1.4:443            147.243.5.179:39019     TIME_WAIT   -                    timewait (20.92/0/0)
+tcp6       0      0 10.0.1.4:443            147.243.70.204:51396    TIME_WAIT   -                    timewait (0.00/0/0)
+tcp6       0      0 10.0.1.4:443            147.243.3.16:45403      TIME_WAIT   -                    timewait (41.64/0/0)
+...
+```
+
 Those connection will be used when request is from end users.
-We can observe the TCP connection in out backend servers.
+
 I run Apache Bench test with same pressure, 10 concurrent and total 100 connection.
 ![afdabtest](https://github.com/yinghli/AzureFrontDoorTest/blob/master/afdabtest.PNG)
 
 Then we increase the 10X pressure for testing. The result is still very good.
 ![afdabtest2](https://github.com/yinghli/AzureFrontDoorTest/blob/master/afdabtest2.PNG)
+
+Even the concurrent connection is 100 per second, front end server will handle all those connection. 
+Backend server will only see few TCP connection is in "TCP-ESTABLISHED" state.
+
+```
+root@USEastVM01:/home/sysadmin# netstat -anotp | grep "ESTABLISHED"
+tcp6       0    258 10.0.1.4:443            147.243.9.139:57115     ESTABLISHED 11675/apache2        on (0.55/0/0)
+tcp6       0    258 10.0.1.4:443            147.243.81.242:21903    ESTABLISHED 11648/apache2        on (0.63/0/0)
+```
+This will save backend server TCP connection resource.
