@@ -29,7 +29,19 @@ We also use Apache Bench to test our website.
 
 Base on the performance report, we saw two challenges here. One is TCP connection setup time. This number is high due to high network latency. The other is page load time. This number is also impact by the network latency and page size. If we wants to improve the end use web&app experience, we need to focus on those two parts.
 
-We setup AFD at Azure East Asia region. Front end name is "", and default routing rule is "".
+By design, AFD try to solve those two problem. We setup a front end as near as customer and terminate the connection. Front end reinitialize this connection to backend server, working as reverse proxy server. In this case, front end server and backend server are all inside Microsoft network, Microsoft backbone network can ensure that this connection is transport by a low latency and low packet drop network. Besides that, AFD can also provide caching function to reduce static information transfer time.
+
+We setup AFD at Azure East Asia region. Front end name is "yinghli.azurefd.net".
+![Frontend](https://github.com/yinghli/AzureFrontDoorTest/blob/master/frontend.PNG)
+
+Add current webserver into backend pool. Setup HTTPS as health probes. Keep load balance rule as default.
+![Backend](https://github.com/yinghli/AzureFrontDoorTest/blob/master/backend.PNG)
+
+Setup default routing rule is to match any information under website and accept HTTP and HTTPS. 
+![routing](https://github.com/yinghli/AzureFrontDoorTest/blob/master/routing.PNG)
+
+In advance page, we enable caching.
+![routing2](https://github.com/yinghli/AzureFrontDoorTest/blob/master/routing2.PNG)
 
 ## Anycast
 
