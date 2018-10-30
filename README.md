@@ -63,8 +63,8 @@ In advance page, we enable caching and dynamic compression.
 
 ## Anycast
 
-For more information about ![Anycast](https://docs.microsoft.com/en-us/azure/frontdoor/front-door-routing-architecture).
-In my case, after setup AFD, I do a nslookup at my laptop.
+For more information about [Anycast](https://docs.microsoft.com/en-us/azure/frontdoor/front-door-routing-architecture).
+In my case, after setup AFD, I do a nslookup at my laptop. 
 
 ```
 C:\windows\system32>nslookup yinghli.azurefd.net
@@ -111,6 +111,11 @@ From my Chrome browser, using developer tools, I track the webpage loading perfo
 
 ## TCP connection on host
 
-On my backend server, I can see 100+ TCP connection is setup from front end server backend. 
+On my backend server, I can see 100+ TCP connection is setup from front end server backend.
 Those connection will be used when request is from end users.
 We can observe the TCP connection in out backend servers.
+I run Apache Bench test with same pressure, 10 concurrent and total 100 connection.
+![afdabtest](https://github.com/yinghli/AzureFrontDoorTest/blob/master/afdabtest.PNG)
+
+Then we increase the 10X pressure for testing. The result is still very good.
+![afdabtest2](https://github.com/yinghli/AzureFrontDoorTest/blob/master/afdabtest2.PNG)
