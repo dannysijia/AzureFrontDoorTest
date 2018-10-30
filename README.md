@@ -22,7 +22,7 @@ Psping from my laptop to website, end to end latency is around 270ms.
 ![](https://github.com/yinghli/AzureFrontDoorTest/blob/master/end2endlatency.png)
 
 From my Chrome browser, using developer tools, I track the webpage loading performance.
-![](https://github.com/yinghli/AzureFrontDoorTest/blob/master/detail.png)
+![](https://github.com/yinghli/AzureFrontDoorTest/blob/master/detail.PNG)
 
 We setup AFD at Azure East Asia region. Front end name is "", and default routing rule is "".
 
