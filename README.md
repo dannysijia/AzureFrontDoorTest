@@ -19,10 +19,15 @@ We build a simple website in US east region with both HTTP and HTTPS capability.
 I test this webserver from my laptop(123.121.197.100) with Psping and Apache bench.
 
 Psping from my laptop to website, end to end latency is around 270ms.
-![](https://github.com/yinghli/AzureFrontDoorTest/blob/master/end2endlatency.png)
+![Network](https://github.com/yinghli/AzureFrontDoorTest/blob/master/end2endlatency.png)
 
 From my Chrome browser, using developer tools, I track the webpage loading performance.
-![](https://github.com/yinghli/AzureFrontDoorTest/blob/master/detail.PNG)
+![Chrome](https://github.com/yinghli/AzureFrontDoorTest/blob/master/detail.PNG)
+
+We also use Apache Bench to test our website.
+![ApacheBench](https://github.com/yinghli/AzureFrontDoorTest/blob/master/abtest.png)
+
+Base on the performance report, we saw two challenges here. One is TCP connection setup time. This number is high due to high network latency. The other is page load time. This number is also impact by the network latency and page size. If we wants to improve the end use web&app experience, we need to focus on those two parts.
 
 We setup AFD at Azure East Asia region. Front end name is "", and default routing rule is "".
 
