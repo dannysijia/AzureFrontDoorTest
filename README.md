@@ -18,8 +18,11 @@ We build a simple website in US east region with both HTTP and HTTPS capability.
 
 I test this webserver from my laptop(123.121.197.100) with Psping and Apache bench.
 
-Psping from my laptop to website, end to end latency is around 260ms.
+Psping from my laptop to website, end to end latency is around 270ms.
 ![](https://github.com/yinghli/AzureFrontDoorTest/blob/master/end2endlatency.png)
+
+From my Chrome browser, using developer tools, I track the webpage loading performance.
+![](https://github.com/yinghli/AzureFrontDoorTest/blob/master/detail.png)
 
 We setup AFD at Azure East Asia region. Front end name is "", and default routing rule is "".
 
