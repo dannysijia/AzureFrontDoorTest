@@ -19,7 +19,23 @@ We build a simple website in US east region with both HTTP and HTTPS capability.
 I test this webserver from my laptop(123.121.197.100) with Psping and Apache bench.
 
 Psping from my laptop to website, end to end latency is around 270ms.
-![Network](https://github.com/yinghli/AzureFrontDoorTest/blob/master/end2endlatency.png)
+C:\windows\system32>psping.exe 23.100.24.170:443
+
+PsPing v2.10 - PsPing - ping, latency, bandwidth measurement utility
+Copyright (C) 2012-2016 Mark Russinovich
+Sysinternals - www.sysinternals.com
+
+TCP connect to 23.100.24.170:443:
+5 iterations (warmup 1) ping test:
+Connecting to 23.100.24.170:443 (warmup): from 192.168.199.112:7627: 268.48ms
+Connecting to 23.100.24.170:443: from 192.168.199.112:7628: 264.88ms
+Connecting to 23.100.24.170:443: from 192.168.199.112:7629: 273.23ms
+Connecting to 23.100.24.170:443: from 192.168.199.112:7633: 259.01ms
+Connecting to 23.100.24.170:443: from 192.168.199.112:7634: 283.29ms
+
+TCP connect statistics for 23.100.24.170:443:
+  Sent = 4, Received = 4, Lost = 0 (0% loss),
+  Minimum = 259.01ms, Maximum = 283.29ms, Average = 270.10ms
 
 From my Chrome browser, using developer tools, I track the webpage loading performance.
 ![Chrome](https://github.com/yinghli/AzureFrontDoorTest/blob/master/detail.PNG)
@@ -40,17 +56,55 @@ Add current webserver into backend pool. Setup HTTPS as health probes. Keep load
 Setup default routing rule is to match any information under website and accept HTTP and HTTPS. 
 ![routing](https://github.com/yinghli/AzureFrontDoorTest/blob/master/routing.PNG)
 
-In advance page, we enable caching.
+In advance page, we enable caching and dynamic compression.
 ![routing2](https://github.com/yinghli/AzureFrontDoorTest/blob/master/routing2.PNG)
 
 ## Anycast
 
-We use typical DNS name lookup for our website and AFD instance.
+For more information about ![Anycast](https://docs.microsoft.com/en-us/azure/frontdoor/front-door-routing-architecture)
+In my case, after setup AFD, I do a nslookup at my laptop.
 
-## TCP connection on host
+C:\windows\system32>nslookup yinghli.azurefd.net
+Server:  Hiwifi.lan
+Address:  192.168.199.1
 
-We can observe the TCP connection in out backend servers.
+Non-authoritative answer:
+Name:    standard.t-0001.t-msedge.net
+Addresses:  2620:1ec:bdf::10
+          13.107.246.10
+Aliases:  yinghli.azurefd.net
+          t-0001.t-msedge.net
+          Edge-Prod-HK2r3.ctrl.t-0001.t-msedge.net
 
 ## Round-Trip time
 
 We measure the end to end latency for better understand the AFD.
+
+C:\windows\system32>psping.exe yinghli.azurefd.net:443
+
+PsPing v2.10 - PsPing - ping, latency, bandwidth measurement utility
+Copyright (C) 2012-2016 Mark Russinovich
+Sysinternals - www.sysinternals.com
+
+TCP connect to 13.107.246.10:443:
+5 iterations (warmup 1) ping test:
+Connecting to 13.107.246.10:443 (warmup): from 192.168.199.112:16765: 42.31ms
+Connecting to 13.107.246.10:443: from 192.168.199.112:16768: 44.77ms
+Connecting to 13.107.246.10:443: from 192.168.199.112:16770: 45.61ms
+Connecting to 13.107.246.10:443: from 192.168.199.112:16774: 45.27ms
+Connecting to 13.107.246.10:443: from 192.168.199.112:16777: 44.49ms
+
+TCP connect statistics for 13.107.246.10:443:
+  Sent = 4, Received = 4, Lost = 0 (0% loss),
+  Minimum = 44.49ms, Maximum = 45.61ms, Average = 45.04ms
+
+Psping from my host to front end server, latency is 45ms. This is because I don't need to talk with real webserver in US East, instead of front end server will reply my information from Hong Kong.
+
+From my Chrome browser, using developer tools, I track the webpage loading performance. From the AFD result, you can see that both connection and request/response time are shorter than before.
+![Chrome](https://github.com/yinghli/AzureFrontDoorTest/blob/master/afdchrome.PNG)
+
+## TCP connection on host
+
+On my backend server, I can see 100+ TCP connection is setup from front end server backend. 
+Those connection will be used when request is from end users.
+We can observe the TCP connection in out backend servers.
