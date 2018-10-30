@@ -12,7 +12,7 @@ We setup a AFD service at East Asia region. We build backend application pool at
 We setup a small website with Apache/PHP/MySQL, test both HTTP and HTTPS performance from mainland China (Beijing).
 Testing method include Chrome developer tools for single test and Apache benchmark for load testing.
 
-![topo](https://github.com/yinghli/AzureFrontDoorTest/blob/master/topo.png)
+![Topo](https://github.com/yinghli/AzureFrontDoorTest/blob/master/Topo.png)
 
 ## Building a backend server
 
